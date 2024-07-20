@@ -1,9 +1,12 @@
+import { colors } from "@mui/material";
+
 export const data = [
   {
     id: 1,
     name: "Product 1",
     price: 100,
     quantity: 10,
+    color: "red",
     imgURL: "src/images/product/product1.jpg",
   },
   {
@@ -11,6 +14,7 @@ export const data = [
     name: "Product 2",
     price: 200,
     quantity: 20,
+    color: "blue",
     imgURL: "src/images/product/product2.jpg",
   },
   {
@@ -18,6 +22,7 @@ export const data = [
     name: "Product 3",
     price: 300,
     quantity: 30,
+    color: "green",
     imgURL: "src/images/product/product3.jpg",
   },
   {
@@ -25,6 +30,7 @@ export const data = [
     name: "Product 4",
     price: 400,
     quantity: 40,
+    color: "yellow",
     imgURL: "src/images/product/product4.jpg",
   },
   {
@@ -32,6 +38,7 @@ export const data = [
     name: "Product 5",
     price: 500,
     quantity: 50,
+    color: "purple",
     imgURL: "src/images/product/product5.jpg",
   },
   {
@@ -39,6 +46,7 @@ export const data = [
     name: "Product 6",
     price: 600,
     quantity: 60,
+    color: "orange",
     imgURL: "src/images/product/product6.jpg",
   },
   {
@@ -46,6 +54,7 @@ export const data = [
     name: "Product 7",
     price: 700,
     quantity: 70,
+    color: "pink",
     imgURL: "src/images/product/product7.jpg",
   },
   {
@@ -53,6 +62,7 @@ export const data = [
     name: "Product 8",
     price: 800,
     quantity: 80,
+    color: "brown",
     imgURL: "src/images/product/product8.jpg",
   },
   {
@@ -60,6 +70,7 @@ export const data = [
     name: "Product 9",
     price: 900,
     quantity: 90,
+    color: "black",
     imgURL: "src/images/product/product9.jpg",
   },
   {
@@ -67,6 +78,7 @@ export const data = [
     name: "Product 10",
     price: 1000,
     quantity: 100,
+    color: "white",
     imgURL: "src/images/product/product10.jpg",
   },
 ];

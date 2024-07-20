@@ -7,6 +7,7 @@ function useCart(product) {
   const dispatch = useDispatch();
 
   const handleAddToCart = (product) => {
+    console.log("product sss", product);
     // Dispatch an action to toggle product in cart
     dispatch(addToCart(product));
   };

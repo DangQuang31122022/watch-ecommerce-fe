@@ -21,9 +21,9 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useTheme } from "@mui/material/styles";
 import { useMediaQuery } from "@mui/material";
-import IncDec from "../../incdec";
-import { colors } from "../../styles/theme";
+import { Colors } from "../../styles/theme";
 import { forwardRef } from "react";
+import IncDec from "../incdec";
 
 const SlideTransition = forwardRef(function SlideTransition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
@@ -53,7 +53,7 @@ export default function ProductDetail({ open, onClose, product }) {
     >
       <DialogTitle
         sx={{
-          background: colors.secondary,
+          background: Colors.secondary,
         }}
       >
         <Box
@@ -105,7 +105,7 @@ export default function ProductDetail({ open, onClose, product }) {
             <Box
               display="flex"
               alignItems="center"
-              sx={{ mt: 4, color: colors.light }}
+              sx={{ mt: 4, color: Colors.light }}
             >
               <FavoriteIcon sx={{ mr: 2 }} />
               Add to wishlist
@@ -113,7 +113,7 @@ export default function ProductDetail({ open, onClose, product }) {
             <Box
               sx={{
                 mt: 4,
-                color: colors.dove_gray,
+                color: Colors.dove_gray,
               }}
             >
               <FacebookIcon />

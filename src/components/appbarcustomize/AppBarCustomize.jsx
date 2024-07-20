@@ -12,12 +12,15 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
-import Basket from "./Basket";
+import Basket from "../basket/Basket";
 import { Badge } from "@mui/material";
+import { useSelector } from "react-redux";
 const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function AppBarCustomize() {
+  const { cart } = useSelector((state) => state.cart);
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -133,8 +136,9 @@ function AppBarCustomize() {
 
           {/* Shopping cart */}
           <Box sx={{ flexGrow: 0, marginRight: 2 }}>
-            <Tooltip title="Shopping cart">
-              <Badge badgeContent={4} color="secondary">
+            {/* <Tooltip title="Shopping cart"> */}
+            <Tooltip>
+              <Badge badgeContent={cart.length} color="secondary">
                 <Basket />
               </Badge>
             </Tooltip>

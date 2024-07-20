@@ -1,5 +1,5 @@
 import { Box, Button, styled, Typography } from "@mui/material";
-import { colors } from "../theme";
+import { Colors } from "../theme";
 
 export const BannerContainer = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -8,7 +8,7 @@ export const BannerContainer = styled(Box)(({ theme }) => ({
   height: "40vh",
   padding: 0,
   marginTop: "2rem",
-  background: colors.gray200,
+  background: Colors.gray200,
   [theme.breakpoints.down("md")]: {
     flexDirection: "column",
     alignItems: "center",
@@ -69,7 +69,7 @@ export const BannerShopButton = styled(Button, {
   ],
 })(({ theme }) => ({
   padding: "20px 0px",
-  color: colors.white,
+  color: Colors.white,
   fontWeight: "bold",
   fontSize: "16px",
   [theme.breakpoints.down("sm")]: {

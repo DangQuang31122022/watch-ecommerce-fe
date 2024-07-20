@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { Button, IconButton } from "@mui/material";
 import { Box } from "@mui/system";
-import { colors } from "../theme";
+import { Colors } from "../theme";
 import { slideInBottom, slideInRight } from "../../animations";
 // import { slideInBottom, slideInRight } from "../animations";
 export const Product = styled(Box)(({ theme }) => ({
@@ -17,7 +17,7 @@ export const Product = styled(Box)(({ theme }) => ({
 export const ProductImage = styled("img")(({ width, src, theme }) => ({
   src: `url(${src})`,
   width: width || "100%",
-  background: colors.light_gray,
+  background: Colors.light_gray,
   padding: "10px",
   [theme.breakpoints.down("md")]: {
     width: "80%",
@@ -26,13 +26,13 @@ export const ProductImage = styled("img")(({ width, src, theme }) => ({
 }));
 
 export const ProductActionButton = styled(IconButton)(() => ({
-  background: colors.white,
+  background: Colors.white,
   margin: 4,
 }));
 
 export const ProductFavButton = styled(ProductActionButton)(
   ({ isfav, theme }) => ({
-    color: isfav ? colors.primary : colors.light,
+    color: isfav ? Colors.primary : Colors.light,
     [theme.breakpoints.up("md")]: {
       position: "absolute",
       right: 0,
@@ -55,7 +55,7 @@ export const ProductAddToCart = styled(Button, {
       show &&
       `${slideInBottom} 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both`,
   },
-  background: colors.secondary,
+  background: Colors.secondary,
   opacity: 0.9,
 }));
 
@@ -68,7 +68,7 @@ export const ProductAddToCartChat = styled(Button, {
   },
   bottom: "2%",
   padding: "4px 4px",
-  background: colors.primary,
+  background: Colors.primary,
   opacity: 0.85,
 }));
 

@@ -1,73 +1,101 @@
-import { createTheme } from "@mui/material";
-import { blue, purple } from "@mui/material/colors";
+import { createTheme, lighten } from "@mui/material/styles";
 
-export const colors = {
-  primary: "#4CAF50",
-  secondary: "#FFC107",
-  danger: "#F44336",
-  warning: "#FFEB3B",
-  info: "#2196F3",
-  light: "#F5F5F5",
-  dark: "#212121",
-  white: "#FFFFFF",
-  black: "#000000",
-  text: "#212121",
-  background: "#F5F5F5",
-  border: "#E0E0E0",
+export const DrawerWidth = "60wv";
+
+export const Colors = {
+  primary: "#5f2c3e",
+  secondary: "#d1adcc",
   success: "#4CAF50",
-  error: "#F44336",
-
+  info: "#00a2ff",
+  danger: "#FF5722",
+  warning: "#FFC107",
+  dark: "#0e1b20",
+  light: "#aaa",
+  muted: "#abafb3",
+  border: "#DDDFE1",
+  inverse: "#2F3D4A",
+  shaft: "#333",
+  ///////////////
   // Grays
-  gray50: "#FAFAFA",
-  gray100: "#F5F5F5",
-  gray200: "#EEEEEE",
-
-  // Blues
-  blue50: "#E3F2FD",
-  blue100: "#BBDEFB",
-  blue200: "#90CAF9",
-  blue300: "#64B5F6",
-
-  // colors hunt
-  navyCustom: "#1C1678",
-  purpleCustom: "8576FF",
-  blueCustom: "7BC9FF",
-  mintCustom: "A3FFD6",
+  ///////////////
+  dim_grey: "#696969",
+  dove_gray: "#d5d5d5",
+  body_bg: "#f3f6f9",
+  light_gray: "rgb(230,230,230)",
+  ///////////////
+  // Solid Color
+  ///////////////
+  white: "#fff",
+  black: "#000",
 };
 
-export const theme = createTheme({
+const theme = createTheme({
   palette: {
     primary: {
-      main: colors.primary,
+      main: Colors.primary,
     },
     secondary: {
-      main: colors.secondary,
+      main: Colors.secondary,
     },
-    error: {
-      main: colors.danger,
+  },
+
+  components: {
+    // MuiButton: {
+    //   defaultProps: {
+    //     disableRipple: true,
+    //     disableElevation: true,
+    //   },
+    // },
+    MuiTooltip: {
+      defaultProps: {
+        arrow: true,
+      },
+      styleOverrides: {
+        tooltip: {
+          background: Colors.primary,
+        },
+        arrow: {
+          color: Colors.primary,
+        },
+      },
     },
-    warning: {
-      main: colors.warning,
+    // MuiDrawer: {
+    //   styleOverrides: {
+    //     paper: {
+    //       width: DrawerWidth,
+    //       background: Colors.primary,
+    //       color: Colors.secondary,
+    //       borderRight: `1px solid ${Colors.primary}`,
+    //     },
+    //   },
+    // },
+    MuiDivider: {
+      styleOverrides: {
+        root: {
+          borderColor: lighten(Colors.primary, 0.2),
+        },
+      },
     },
-    info: {
-      main: colors.info,
-    },
-    success: {
-      main: colors.success,
-    },
-    text: {
-      primary: colors.text,
-    },
-    background: {
-      default: colors.background,
-    },
-    components: {
-      MuiButton: {
-        defaultProps: {
-          disableElevation: true, // Remove the shadow
-          disableRipple: true, // Remove the ripple effect
+    MyShopButton: {
+      styleOverrides: {
+        root: {
+          color: Colors.white,
+        },
+        primary: {
+          background: Colors.primary,
+          "&:hover": {
+            background: lighten(Colors.primary, 0.05),
+          },
+        },
+        secondary: {
+          background: `${Colors.secondary}`,
+          "&:hover": {
+            background: lighten(Colors.primary, 0.05),
+          },
         },
       },
     },
   },
 });
+
+export default theme;

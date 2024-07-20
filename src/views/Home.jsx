@@ -2,10 +2,10 @@ import { Box, Container, Typography } from "@mui/material";
 import { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import AppBarCustomize from "../components/AppBarCustomize";
 import Banner from "../components/banner";
 import Product from "../components/product";
-// import Banner from "../components/banner";
+import Footer from "../components/footer";
+import AppBarCustomize from "../components/appbarcustomize/AppBarCustomize";
 
 export default function Home() {
   useEffect(() => {});
@@ -22,6 +22,8 @@ export default function Home() {
           <Banner />
           {/* Content */}
           <Product />
+          {/* Footer */}
+          <Footer />
         </Box>
         <ToastContainer />
       </Container>

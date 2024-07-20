@@ -15,14 +15,23 @@ import FitScreenIcon from "@mui/icons-material/FitScreen";
 import ProductDetail from "../productdetail";
 import ProductMeta from "./ProductMeta";
 // import { useUIContext } from "../../context/ui";
-import useCart from "../../hooks/useCart";
 import useDialogModal from "../../hooks/useDialogModal";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "../../redux/cartSlice";
 
 export default function SingleProductDesktop({ width, product, matches }) {
   const [ProductDetailDialog, showProductDetailDialog, closeProductDialog] =
     useDialogModal(ProductDetail);
   // NEW: add to cart
-  const { addToCart, addToCartText } = useCart(product);
+  const dispatch = useDispatch();
+
+  const handleAddToCart = (product) => {
+    // Dispatch an action to toggle product in cart
+
+    // duplicate product to avoid reference
+    let product1 = { ...product, quantity: 1 };
+    dispatch(addToCart(product1));
+  };
 
   const [showOptions, setShowOptions] = useState(false);
 
@@ -44,11 +53,11 @@ export default function SingleProductDesktop({ width, product, matches }) {
         </ProductFavButton>
         {(showOptions || matches) && (
           <ProductAddToCart
-            onClick={addToCart}
+            onClick={() => handleAddToCart(product)}
             show={showOptions}
             variant="contained"
           >
-            {addToCartText}
+            Add to cart
             {/* {cart.findIndex((c) => c.id === product.id) ? "Add to cart" : "Remove from cart"} */}
           </ProductAddToCart>
         )}

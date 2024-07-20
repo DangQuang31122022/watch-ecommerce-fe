@@ -1,5 +1,5 @@
 import { Box, styled, Typography } from "@mui/material";
-import { colors } from "../theme";
+import { Colors } from "../theme";
 import { Padding } from "@mui/icons-material";
 
 export const PromotionContainer = styled(Box)(({ theme }) => ({
@@ -7,8 +7,8 @@ export const PromotionContainer = styled(Box)(({ theme }) => ({
   justifyContent: "center",
   alignItems: "center",
   overflow: "hidden",
-  background: colors.secondary,
-  color: colors.white,
+  background: Colors.secondary,
+  color: Colors.white,
   [theme.breakpoints.down("md")]: {
     Padding: "40px 0 40px 0",
   },
@@ -20,5 +20,5 @@ export const MessageText = styled(Typography)(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
     fontSize: "1rem",
   },
-  color: colors.white,
+  color: Colors.white,
 }));
