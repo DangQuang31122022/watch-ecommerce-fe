@@ -3,6 +3,8 @@ import Login from "../views/Login";
 import Home from "../views/Home";
 import Account from "../views/account/Account";
 import AccountEdit from "../views/account/AccountEdit";
+import Checkout from "../views/Checkout";
+import Dashboard from "../views/DashBoard";
 
 export default function Routes() {
   return useRoutes([
@@ -26,6 +28,14 @@ export default function Routes() {
       path: "/accountEdit",
       // element: <Navigate to="/account" />,
       element: <AccountEdit />,
+    },
+    {
+      path: "/checkout",
+      element: <Checkout />,
+    },
+    {
+      path: "/admin",
+      element: <Dashboard />,
     },
   ]);
 }
