@@ -32,6 +32,15 @@ const cartSlice = createSlice({
         c.id === action.payload.id ? { ...c, quantity: c.quantity - 1 } : c
       );
     },
+    updateQtyItem: (state, action) => {
+      console.log(action);
+      state.cart = state.cart.map((c) =>
+        c.id === action.payload.product.id
+          ? { ...c, quantity: action.payload.value }
+          : c
+      );
+      console.log(state.cart.find((c) => c.id === action.payload.product.id));
+    },
   },
 });
 export const {
@@ -41,5 +50,6 @@ export const {
   clearBasket,
   addQtyItem,
   minusQtyItem,
+  updateQtyItem,
 } = cartSlice.actions;
 export default cartSlice.reducer;

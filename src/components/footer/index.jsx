@@ -24,6 +24,7 @@ export default function Footer() {
         pt: 12,
         pb: 12,
         fontSize: { xs: "12px", md: "14px" },
+        marginTop: "auto",
       }}
     >
       <Grid container spacing={2} justifyContent="center">

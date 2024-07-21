@@ -5,6 +5,7 @@ import { useTheme } from "@mui/material/styles";
 import { useMediaQuery } from "@mui/material";
 import SingleProductDesktop from "./SingleProductDesktop";
 import { data } from "../../data";
+import AppPagination from "../pagination";
 // import AppPagination from "../pagination";
 
 export default function Products() {
@@ -41,7 +42,7 @@ export default function Products() {
       >
         {renderProducts}
       </Grid>
-      {/* <AppPagination setProducts={(p) => setProducts(p)} /> */}
+      <AppPagination setProducts={(p) => setProducts(p)} />
     </Container>
   );
 }

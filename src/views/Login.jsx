@@ -51,7 +51,7 @@ export default function Login() {
   useEffect(() => {
     let token = localStorage.getItem("token");
     if (token) {
-      navigate("/home");
+      navigate("/");
     }
   }, []);
 
@@ -69,7 +69,7 @@ export default function Login() {
       // save token to local storage
       // localStorage.setItem("token", loginData.data.token);
       dispatch(login(loginData));
-      navigate("/home");
+      navigate("/");
     } else {
       toast.error("Login failed");
     }

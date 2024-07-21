@@ -24,6 +24,8 @@ import { useMediaQuery } from "@mui/material";
 import { Colors } from "../../styles/theme";
 import { forwardRef } from "react";
 import IncDec from "../incdec";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart, updateQtyItem } from "../../redux/cartSlice";
 
 const SlideTransition = forwardRef(function SlideTransition(props, ref) {
   return <Slide direction="down" ref={ref} {...props} />;
@@ -44,6 +46,27 @@ const ProductDetailInfoWrapper = styled(Box)(() => ({
 export default function ProductDetail({ open, onClose, product }) {
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("md"));
+  const dispatch = useDispatch();
+  const { cart } = useSelector((state) => state.cart);
+  let value = 1; // default quantity
+  const handleValueChange = (newValue) => {
+    // console.log(newValue);
+    value = newValue;
+  };
+  const handleButtonClick = () => {
+    // 3 case, add new product, increase quantity, decrease quantity
+    const productInCart = cart.find((item) => item.id === product.id);
+    if (productInCart) {
+      // if (productInCart.quantity < value || value >= 1) {
+      // increase quantityư
+      dispatch(updateQtyItem({ product: productInCart, value }));
+      // }
+    } else {
+      // add new product
+      let product1 = { ...product, quantity: value };
+      dispatch(addToCart(product1));
+    }
+  };
   return (
     <Dialog
       TransitionComponent={SlideTransition}
@@ -99,8 +122,10 @@ export default function ProductDetail({ open, onClose, product }) {
               alignItems="center"
               justifyContent="space-between"
             >
-              <IncDec />
-              <Button variant="contained">Add to Cart</Button>
+              <IncDec onValueChange={handleValueChange} />
+              <Button variant="contained" onClick={handleButtonClick}>
+                Add to Cart
+              </Button>
             </Box>
             <Box
               display="flex"

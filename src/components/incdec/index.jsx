@@ -6,7 +6,7 @@ import { useState } from "react";
 import { clamp } from "./clamp";
 import { Colors } from "../../styles/theme";
 
-export default function IncDec() {
+export default function IncDec({ onValueChange }) {
   const clampV = clamp(1, 10);
   const [value, setValue] = useState(1);
 
@@ -17,7 +17,11 @@ export default function IncDec() {
           borderRadius: 0,
           background: `${Colors.secondary}`,
         }}
-        onClick={() => setValue(clampV(value - 1))}
+        onClick={() => {
+          const newValue = clampV(value - 1);
+          setValue(clampV(value - 1));
+          onValueChange(newValue);
+        }}
       >
         <RemoveIcon />
       </IconButton>
@@ -35,7 +39,11 @@ export default function IncDec() {
           borderRadius: 0,
           background: `${Colors.secondary}`,
         }}
-        onClick={() => setValue(clampV(value + 1))}
+        onClick={() => {
+          const newValue = clampV(value + 1);
+          setValue(clampV(value + 1));
+          onValueChange(newValue);
+        }}
       >
         <AddIcon />
       </IconButton>

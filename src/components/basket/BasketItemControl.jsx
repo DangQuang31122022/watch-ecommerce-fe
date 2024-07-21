@@ -27,7 +27,6 @@ export default function BasketItemControl({ product }) {
       dispatch(minusQtyItem(product));
     }
   };
-  console.log(cart);
   return (
     <BasketItemControls>
       <Button

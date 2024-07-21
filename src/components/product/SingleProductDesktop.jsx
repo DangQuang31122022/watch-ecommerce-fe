@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { forwardRef, useCallback, useEffect, useState } from "react";
 import {
   Product,
   ProductActionButton,
@@ -43,7 +43,15 @@ export default function SingleProductDesktop({ width, product, matches }) {
   const handleMouseLeave = () => {
     setShowOptions(false);
   };
-
+  const ProductActionButtonRef = forwardRef((props, ref) => {
+    const { children, ...rest } = props;
+    return (
+      <ProductActionButton ref={ref} {...rest}>
+        {children}
+      </ProductActionButton>
+    );
+  });
+  ProductActionButtonRef.displayName = "ProductActionButtonRef";
   return (
     <>
       <Product onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
@@ -65,16 +73,16 @@ export default function SingleProductDesktop({ width, product, matches }) {
           show={showOptions || matches ? "true" : undefined}
         >
           <Stack direction={matches ? "row" : "column"}>
-            <ProductActionButton>
+            <ProductActionButtonRef>
               <Tooltip placement="left" title="share this product">
                 <ShareIcon color="primary" />
               </Tooltip>
-            </ProductActionButton>
-            <ProductActionButton onClick={() => showProductDetailDialog()}>
+            </ProductActionButtonRef>
+            <ProductActionButtonRef onClick={() => showProductDetailDialog()}>
               <Tooltip placement="left" title="Full view">
                 <FitScreenIcon color="primary" />
               </Tooltip>
-            </ProductActionButton>
+            </ProductActionButtonRef>
           </Stack>
         </ProductActionsWrapper>
       </Product>

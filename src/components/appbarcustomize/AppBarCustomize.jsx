@@ -15,14 +15,16 @@ import AdbIcon from "@mui/icons-material/Adb";
 import Basket from "../basket/Basket";
 import { Badge } from "@mui/material";
 import { useSelector } from "react-redux";
-const pages = ["Products", "Pricing", "Blog"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function AppBarCustomize() {
+  const pages = ["Products", "Pricing", "Blog"];
+  let settings = ["Profile", "Sign out"];
   const { cart } = useSelector((state) => state.cart);
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  const isSignInSuccess = true;
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -146,11 +148,23 @@ function AppBarCustomize() {
 
           {/* User settings (user menu)*/}
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
+            {isSignInSuccess ? (
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                </IconButton>
+              </Tooltip>
+            ) : (
+              <Box sx={{ display: "flex", gap: 1 }}>
+                <Button variant="contained" color="secondary">
+                  Log in
+                </Button>
+                <Button variant="contained" color="secondary">
+                  Sign up
+                </Button>
+              </Box>
+            )}
+
             <Menu
               sx={{ mt: "45px" }}
               id="menu-appbar"
