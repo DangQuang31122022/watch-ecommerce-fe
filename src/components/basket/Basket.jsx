@@ -18,6 +18,7 @@ import {
 } from "../../styles/cart";
 import BasketItem from "./BasketItem";
 import { clearBasket } from "../../redux/cartSlice";
+import { redirect, useNavigate } from "react-router-dom";
 
 export default function Basket() {
   const [open, setOpen] = React.useState(false);
@@ -26,6 +27,7 @@ export default function Basket() {
   const { cart } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
   };
@@ -36,6 +38,7 @@ export default function Basket() {
     } else {
       // handle checking out
       // redirect to checkout page
+      navigate("/checkout");
     }
   };
 

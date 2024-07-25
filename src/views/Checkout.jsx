@@ -27,6 +27,9 @@ import Info from "../components/checkout/Info";
 import InfoMobile from "../components/checkout/InfoMobile";
 import PaymentForm from "../components/checkout/PaymentForm";
 import Review from "../components/checkout/Review";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import OrderAPI from "../api/OrderAPI";
 
 // function ToggleCustomTheme({ showCustomTheme, toggleCustomTheme }) {
 //   return (
@@ -79,26 +82,39 @@ const logoStyle = {
   marginRight: "-8px",
 };
 
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return <AddressForm />;
-    case 1:
-      return <PaymentForm />;
-    case 2:
-      return <Review />;
-    default:
-      throw new Error("Unknown step");
-  }
-}
-
 export default function Checkout() {
   //   const [mode, setMode] = React.useState("light");
   //   const [showCustomTheme, setShowCustomTheme] = React.useState(true);
   //   const checkoutTheme = createTheme(getCheckoutTheme(mode));
   //   const defaultTheme = createTheme({ palette: { mode } });
   const [activeStep, setActiveStep] = React.useState(0);
+  const { cart } = useSelector((state) => state.cart);
+  const { user } = useSelector((state) => state.user);
+  const [address, setAddress] = React.useState({
+    city: "",
+    district: "",
+    ward: "",
+    street: "",
+  });
+  function getStepContent(step) {
+    switch (step) {
+      case 0:
+        return <AddressForm setAddress={setAddress} />;
+      case 1:
+        return <PaymentForm />;
+      case 2:
+        console.log("address ", address);
+        return <Review address={address} totalPrice={totalPrice} />;
+      default:
+        throw new Error("Unknown step");
+    }
+  }
+  const navigate = useNavigate();
 
+  const totalPrice = cart.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
   //   const toggleColorMode = () => {
   //     setMode((prev) => (prev === "dark" ? "light" : "dark"));
   //   };
@@ -109,12 +125,27 @@ export default function Checkout() {
 
   const handleNext = () => {
     setActiveStep(activeStep + 1);
+    if (activeStep === steps.length - 1 && user) {
+      const order = {
+        // get date now
+        createAt: new Date().toISOString().split("T")[0],
+        total: totalPrice,
+        status: "pending",
+        user: user,
+        products: cart,
+        shippingAddress: address,
+      };
+      console.log("order", order);
+      OrderAPI.createOrder(order);
+    }
   };
 
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
-
+  const backHome = () => {
+    navigate("/");
+  };
   return (
     <Box>
       <CssBaseline />
@@ -146,17 +177,17 @@ export default function Checkout() {
             <Button
               startIcon={<ArrowBackRoundedIcon />}
               component="a"
-              href="/material-ui/getting-started/templates/landing-page/"
+              onClick={backHome}
               sx={{ ml: "-8px" }}
             >
-              Back to
-              <img
+              Back
+              {/* <img
                 src={
                   "https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/61f12e6faf73568658154dae_SitemarkDefault.svg"
                 }
                 style={logoStyle}
                 alt="Sitemark's logo"
-              />
+              /> */}
             </Button>
           </Box>
           <Box
@@ -168,7 +199,7 @@ export default function Checkout() {
               maxWidth: 500,
             }}
           >
-            <Info totalPrice={activeStep >= 2 ? "$144.97" : "$134.98"} />
+            <Info products={cart} totalPrice={totalPrice} />
           </Box>
         </Grid>
         <Grid
@@ -197,6 +228,7 @@ export default function Checkout() {
               maxWidth: { sm: "100%", md: 600 },
             }}
           >
+            {/* back button  */}
             <Box
               sx={{
                 display: { xs: "flex", md: "none" },
@@ -208,20 +240,21 @@ export default function Checkout() {
               <Button
                 startIcon={<ArrowBackRoundedIcon />}
                 component="a"
-                href="/material-ui/getting-started/templates/landing-page/"
+                onClick={backHome}
                 sx={{ alignSelf: "start" }}
               >
-                Back to
-                <img
+                Back
+                {/* <img
                   src={
                     "https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/61f12e6faf73568658154dae_SitemarkDefault.svg"
                   }
                   style={logoStyle}
                   alt="Sitemark's logo"
-                />
+                /> */}
               </Button>
               {/* <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} /> */}
             </Box>
+            {/* Step label */}
             <Box
               sx={{
                 display: { xs: "none", md: "flex" },
@@ -255,6 +288,7 @@ export default function Checkout() {
               </Stepper>
             </Box>
           </Box>
+          {/* Info */}
           <Card
             sx={{
               display: { xs: "flex", md: "none" },
@@ -274,13 +308,9 @@ export default function Checkout() {
                 <Typography variant="subtitle2" gutterBottom>
                   Selected products
                 </Typography>
-                <Typography variant="body1">
-                  {activeStep >= 2 ? "$144.97" : "$134.98"}
-                </Typography>
+                <Typography variant="body1">{totalPrice}</Typography>
               </div>
-              <InfoMobile
-                totalPrice={activeStep >= 2 ? "$144.97" : "$134.98"}
-              />
+              <InfoMobile products={cart} totalPrice={totalPrice} />
             </CardContent>
           </Card>
           <Box
@@ -319,6 +349,7 @@ export default function Checkout() {
                 </Step>
               ))}
             </Stepper>
+            {/* step 3 */}
             {activeStep === steps.length ? (
               <Stack spacing={2} useFlexGap>
                 <Typography variant="h1">📦</Typography>
@@ -334,6 +365,7 @@ export default function Checkout() {
                     alignSelf: "start",
                     width: { xs: "100%", sm: "auto" },
                   }}
+                  onClick={backHome}
                 >
                   Go to my orders
                 </Button>

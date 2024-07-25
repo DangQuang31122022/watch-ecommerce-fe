@@ -11,7 +11,7 @@ import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
 
 import Info from "./Info";
 
-function InfoMobile({ totalPrice }) {
+function InfoMobile({ products, totalPrice }) {
   const [open, setOpen] = React.useState(false);
 
   const toggleDrawer = (newOpen) => () => {
@@ -26,7 +26,7 @@ function InfoMobile({ totalPrice }) {
       >
         <CloseIcon />
       </IconButton>
-      <Info totalPrice={totalPrice} />
+      <Info products={products} totalPrice={totalPrice} />
     </Box>
   );
 
@@ -46,8 +46,8 @@ function InfoMobile({ totalPrice }) {
   );
 }
 
-InfoMobile.propTypes = {
-  totalPrice: PropTypes.string.isRequired,
-};
+// InfoMobile.propTypes = {
+//   totalPrice: PropTypes.string.isRequired,
+// };
 
 export default InfoMobile;

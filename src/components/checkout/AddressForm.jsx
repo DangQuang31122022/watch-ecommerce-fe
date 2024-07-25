@@ -12,10 +12,24 @@ const FormGrid = styled(Grid)(() => ({
   flexDirection: "column",
 }));
 
-export default function AddressForm() {
+export default function AddressForm({ setAddress }) {
+  const [street, setStreet] = React.useState("47/2/2");
+  const [ward, setWard] = React.useState("phuong 10");
+  const [district, setDistrict] = React.useState("Go Vap");
+  const [city, setCity] = React.useState("HCM");
+  const getAddresses = () => {
+    // get value from form and return
+    console.log("address ", street, ward, district, city);
+    setAddress({ street, ward, district, city });
+  };
+  React.useEffect(() => {
+    return () => {
+      getAddresses();
+    };
+  }, []);
   return (
     <Grid container spacing={3}>
-      <FormGrid item xs={12} md={6}>
+      {/* <FormGrid item xs={12} md={6}>
         <FormLabel htmlFor="first-name" required>
           First name
         </FormLabel>
@@ -23,7 +37,7 @@ export default function AddressForm() {
           id="first-name"
           name="first-name"
           type="name"
-          placeholder="John"
+          placeholder="Dang"
           autoComplete="first name"
           required
         />
@@ -36,11 +50,11 @@ export default function AddressForm() {
           id="last-name"
           name="last-name"
           type="last-name"
-          placeholder="Snow"
+          placeholder="Quang"
           autoComplete="last name"
           required
         />
-      </FormGrid>
+      </FormGrid> */}
       <FormGrid item xs={12}>
         <FormLabel htmlFor="address1" required>
           Address line 1
@@ -51,7 +65,9 @@ export default function AddressForm() {
           type="address1"
           placeholder="Street name and number"
           autoComplete="shipping address-line1"
+          value={street}
           required
+          onChange={(e) => setStreet(e.target.value)}
         />
       </FormGrid>
       <FormGrid item xs={12}>
@@ -73,35 +89,41 @@ export default function AddressForm() {
           id="city"
           name="city"
           type="city"
-          placeholder="New York"
+          placeholder="HCM"
           autoComplete="City"
+          value={city}
           required
+          onChange={(e) => setCity(e.target.value)}
         />
       </FormGrid>
       <FormGrid item xs={6}>
-        <FormLabel htmlFor="state" required>
-          State
+        <FormLabel htmlFor="district" required>
+          District
         </FormLabel>
         <OutlinedInput
-          id="state"
-          name="state"
-          type="state"
-          placeholder="NY"
-          autoComplete="State"
+          id="district"
+          name="district"
+          type="district"
+          placeholder="Go Vap"
+          autoComplete="district"
           required
+          value={district}
+          onChange={(e) => setDistrict(e.target.value)}
         />
       </FormGrid>
       <FormGrid item xs={6}>
-        <FormLabel htmlFor="zip" required>
-          Zip / Postal code
+        <FormLabel htmlFor="ward" required>
+          Ward
         </FormLabel>
         <OutlinedInput
-          id="zip"
-          name="zip"
-          type="zip"
-          placeholder="12345"
-          autoComplete="shipping postal-code"
+          id="ward"
+          name="ward"
+          type="ward"
+          placeholder="phuong 10"
+          autoComplete="shipping ward"
           required
+          value={ward}
+          onChange={(e) => setWard(e.target.value)}
         />
       </FormGrid>
       <FormGrid item xs={6}>
@@ -112,7 +134,8 @@ export default function AddressForm() {
           id="country"
           name="country"
           type="country"
-          placeholder="United States"
+          placeholder="Viet Nam"
+          defaultValue="Viet nam"
           autoComplete="shipping country"
           required
         />

@@ -10,14 +10,23 @@ import {
 import { Add, PlusOneOutlined } from "@mui/icons-material";
 import Remove from "@mui/icons-material/Remove";
 import { data } from "../../data";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
+import { ProductAPI } from "../../api/ProductAPI";
 // product is a item of cart
 export default function BasketItemControl({ product }) {
   const { cart } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
-  const productStock = data.find((p) => p.id === product.id);
+  const [productStock, setProductStock] = useState(null);
+  useEffect(() => {
+    const getProductStock = async (id) => {
+      const response = await ProductAPI.getProductById(id);
+      setProductStock(response.data);
+    };
+    getProductStock(product.id);
+  }, [product]);
+
   const onAddQty = () => {
-    console.log(productStock);
+    // console.log(productStock);
     if (product.quantity < productStock.quantity) {
       dispatch(addQtyItem(product));
     }
@@ -30,7 +39,7 @@ export default function BasketItemControl({ product }) {
   return (
     <BasketItemControls>
       <Button
-        disabled={product.quantity === productStock.quantity}
+        // disabled={product.quantity === productStock.quantity}
         onClick={onAddQty}
         sx={{ width: "35px", height: "100%" }}
       >

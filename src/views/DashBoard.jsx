@@ -17,13 +17,13 @@ import Link from "@mui/material/Link";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import {
-  mainListItems,
-  secondaryListItems,
-} from "../components/admin/ListItems";
+import { mainListItems } from "../components/admin/ListItems";
 import Chart from "../components/admin/Chart";
 import Deposits from "../components/admin/Deposits";
 import Orders from "../components/admin/Orders";
+import { DataGrid } from "@mui/x-data-grid";
+import { ProductAPI } from "../api/ProductAPI";
+import { Button, Stack } from "@mui/material";
 
 function Copyright(props) {
   return (
@@ -94,120 +94,200 @@ const defaultTheme = createTheme();
 
 export default function Dashboard() {
   const [open, setOpen] = React.useState(true);
+  const [products, setProducts] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+
+  React.useEffect(() => {
+    const fetchProducts = async () => {
+      const data = await ProductAPI.allProducts();
+      if (data && data.data) {
+        setProducts(data.data);
+        setLoading(false);
+      }
+    };
+    fetchProducts();
+  }, []);
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Box sx={{ display: "flex" }}>
-        <CssBaseline />
-        <AppBar position="absolute" open={open}>
-          <Toolbar
-            sx={{
-              pr: "24px", // keep right padding when drawer closed
-            }}
-          >
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              onClick={toggleDrawer}
-              sx={{
-                marginRight: "36px",
-                ...(open && { display: "none" }),
-              }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography
-              component="h1"
-              variant="h6"
-              color="inherit"
-              noWrap
-              sx={{ flexGrow: 1 }}
-            >
-              Dashboard
-            </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-        <Drawer variant="permanent" open={open}>
-          <Toolbar
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "flex-end",
-              px: [1],
-            }}
-          >
-            <IconButton onClick={toggleDrawer}>
-              <ChevronLeftIcon />
-            </IconButton>
-          </Toolbar>
-          <Divider />
-          <List component="nav">
-            {mainListItems}
-            <Divider sx={{ my: 1 }} />
-            {secondaryListItems}
-          </List>
-        </Drawer>
-        <Box
-          component="main"
+    // <ThemeProvider theme={defaultTheme}>
+    <Box sx={{ display: "flex" }}>
+      <CssBaseline />
+      <AppBar position="absolute" open={open}>
+        <Toolbar
           sx={{
-            backgroundColor: (theme) =>
-              theme.palette.mode === "light"
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
-            flexGrow: 1,
-            height: "100vh",
-            overflow: "auto",
+            pr: "24px", // keep right padding when drawer closed
           }}
         >
-          <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3}>
-              {/* Chart */}
-              <Grid item xs={12} md={8} lg={9}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: "flex",
-                    flexDirection: "column",
-                    height: 240,
-                  }}
-                >
-                  <Chart />
-                </Paper>
-              </Grid>
-              {/* Recent Deposits */}
-              <Grid item xs={12} md={4} lg={3}>
-                <Paper
-                  sx={{
-                    p: 2,
-                    display: "flex",
-                    flexDirection: "column",
-                    height: 240,
-                  }}
-                >
-                  <Deposits />
-                </Paper>
-              </Grid>
-              {/* Recent Orders */}
-              <Grid item xs={12}>
-                <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
-                  <Orders />
-                </Paper>
-              </Grid>
-            </Grid>
-            <Copyright sx={{ pt: 4 }} />
-          </Container>
-        </Box>
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="open drawer"
+            onClick={toggleDrawer}
+            sx={{
+              marginRight: "36px",
+              ...(open && { display: "none" }),
+            }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography
+            component="h1"
+            variant="h6"
+            color="inherit"
+            noWrap
+            sx={{ flexGrow: 1 }}
+          >
+            Dashboard
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Drawer variant="permanent" open={open}>
+        <Toolbar
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "flex-end",
+            px: [1],
+          }}
+        >
+          <IconButton onClick={toggleDrawer}>
+            <ChevronLeftIcon />
+          </IconButton>
+        </Toolbar>
+        <Divider />
+        <List component="nav">{mainListItems}</List>
+      </Drawer>
+      <Box
+        component="main"
+        sx={{
+          backgroundColor: (theme) =>
+            theme.palette.mode === "light"
+              ? theme.palette.grey[100]
+              : theme.palette.grey[900],
+          flexGrow: 1,
+          height: "100vh",
+          overflow: "auto",
+        }}
+      >
+        <Toolbar />
+        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+          {loading ? (
+            () => <div>Loading...</div>
+          ) : (
+            <ProductUI products={products} />
+          )}
+          <Copyright sx={{ pt: 4 }} />
+        </Container>
       </Box>
-    </ThemeProvider>
+    </Box>
+    // </ThemeProvider>
+  );
+}
+
+function ProductUI({ products }) {
+  const [nbRows, setNbRows] = React.useState(5);
+  const columns = [
+    { field: "id", headerName: "ID", width: 90 },
+    {
+      field: "name",
+      headerName: "Product Name",
+      width: 150,
+      editable: true,
+    },
+    {
+      field: "price",
+      headerName: "Price",
+      width: 110,
+      editable: true,
+    },
+    {
+      field: "quantity",
+      headerName: "Quantity",
+      width: 110,
+      editable: true,
+    },
+    {
+      field: "brand",
+      headerName: "Brand",
+      width: 110,
+      editable: true,
+    },
+    {
+      field: "description",
+      headerName: "Description",
+      width: 110,
+      editable: true,
+    },
+    {
+      field: "battery",
+      headerName: "Battery",
+      width: 110,
+      editable: true,
+    },
+    {
+      field: "screen",
+      headerName: "Screen",
+      width: 110,
+      editable: true,
+    },
+    {
+      field: "color",
+      headerName: "Color",
+      width: 110,
+      editable: true,
+    },
+    {
+      field: "status",
+      headerName: "Status",
+      width: 110,
+      editable: true,
+    },
+  ];
+  const rows = products.map((product) => {
+    return {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      quantity: product.quantity,
+      brand: product.brand,
+      description: product.description,
+      battery: product.battery,
+      screen: product.screen,
+      color: product.color,
+      status: product.status,
+    };
+  });
+  const removeRow = () => setNbRows((x) => Math.max(0, x - 1));
+  const addRow = () => setNbRows((x) => Math.min(100, x + 1));
+  return (
+    <>
+      <Stack direction="row" spacing={1} sx={{ mb: 1 }}>
+        <Button size="small" onClick={removeRow}>
+          Remove a row
+        </Button>
+        <Button size="small" onClick={addRow}>
+          Add a row
+        </Button>
+      </Stack>
+      <div
+        style={{
+          height: 400,
+        }}
+      >
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          pageSize={5}
+          checkboxSelection
+          rowsPerPageOptions={[5]}
+          pagination
+          paginationMode="client"
+        />
+      </div>
+    </>
   );
 }

@@ -55,7 +55,7 @@ export default function SingleProductDesktop({ width, product, matches }) {
   return (
     <>
       <Product onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-        <ProductImage width={width} src={product.imgURL} />
+        <ProductImage width={width} src={product.urlImage} />
         <ProductFavButton isfav={0}>
           <FavoriteIcon />
         </ProductFavButton>

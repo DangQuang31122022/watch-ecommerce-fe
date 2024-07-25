@@ -6,8 +6,8 @@ import { useState } from "react";
 import { clamp } from "./clamp";
 import { Colors } from "../../styles/theme";
 
-export default function IncDec({ onValueChange }) {
-  const clampV = clamp(1, 10);
+export default function IncDec({ onValueChange, maxQuantity }) {
+  const clampV = clamp(1, maxQuantity);
   const [value, setValue] = useState(1);
 
   return (

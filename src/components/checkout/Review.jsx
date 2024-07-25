@@ -8,30 +8,32 @@ import ListItemText from "@mui/material/ListItemText";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
-const addresses = ["1 MUI Drive", "Reactville", "Anytown", "99999", "USA"];
+// const addresses = ["1 MUI Drive", "Reactville", "Anytown", "99999", "USA"];
 const payments = [
   { name: "Card type:", detail: "Visa" },
-  { name: "Card holder:", detail: "Mr. John Smith" },
-  { name: "Card number:", detail: "xxxx-xxxx-xxxx-1234" },
-  { name: "Expiry date:", detail: "04/2024" },
+  { name: "Card holder:", detail: "Dang Quang" },
+  { name: "Card number:", detail: "xxxx-xxxx-xxxx-8888" },
+  { name: "Expiry date:", detail: "12/2024" },
 ];
 
-export default function Review() {
+export default function Review({ address, totalPrice }) {
+  const priceShip = 9.99;
+  console.log("address ", address);
   return (
     <Stack spacing={2}>
       <List disablePadding>
         <ListItem sx={{ py: 1, px: 0 }}>
-          <ListItemText primary="Products" secondary="4 selected" />
-          <Typography variant="body2">$134.98</Typography>
+          <ListItemText primary="Products" secondary="" />
+          <Typography variant="body2">${totalPrice}</Typography>
         </ListItem>
         <ListItem sx={{ py: 1, px: 0 }}>
           <ListItemText primary="Shipping" secondary="Plus taxes" />
-          <Typography variant="body2">$9.99</Typography>
+          <Typography variant="body2">${priceShip}</Typography>
         </ListItem>
         <ListItem sx={{ py: 1, px: 0 }}>
           <ListItemText primary="Total" />
           <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-            $144.97
+            ${totalPrice - priceShip}
           </Typography>
         </ListItem>
       </List>
@@ -46,9 +48,10 @@ export default function Review() {
           <Typography variant="subtitle2" gutterBottom>
             Shipment details
           </Typography>
-          <Typography gutterBottom>John Smith</Typography>
           <Typography color="text.secondary" gutterBottom>
-            {addresses.join(", ")}
+            {/* {addresses.join(", ")} */}
+            {address.street} , {address.ward} , {address.district} ,{" "}
+            {address.city}
           </Typography>
         </div>
         <div>

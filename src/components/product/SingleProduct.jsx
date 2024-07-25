@@ -48,7 +48,7 @@ export default function SingleProduct({ product, matches }) {
   return (
     <>
       <Product onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-        <ProductImage src={product.imgURL} />
+        <ProductImage src={product.urlImage} />
         <ProductMeta product={product} matches={matches} />
         <ProductActionsWrapper>
           <Stack direction={matches ? "row" : "column"}>

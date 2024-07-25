@@ -39,7 +39,7 @@ export default function BasketItem({ product }) {
         }}
       >
         <Grid item>
-          <BasketItemImg src={product.imgURL} alt={product.name} />
+          <BasketItemImg src={product.urlImage} alt={product.name} />
         </Grid>
         <Grid item>
           <BasketItemName>{product.name}</BasketItemName>
@@ -49,8 +49,8 @@ export default function BasketItem({ product }) {
               <Typography fontWeight={700}>{product.quantity}</Typography>
             </Grid>
             <Grid item xs={4}>
-              <Typography variant="caption">Size</Typography>
-              <Typography fontWeight={700}>{product.size}</Typography>
+              <Typography variant="caption">Battery</Typography>
+              <Typography fontWeight={700}>{product.battery}</Typography>
             </Grid>
             <Grid item xs={4}>
               <Typography variant="caption">Color</Typography>

@@ -12,19 +12,54 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
+import ShutterSpeedIcon from "@mui/icons-material/ShutterSpeed";
 import Basket from "../basket/Basket";
 import { Badge } from "@mui/material";
-import { useSelector } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { UserAPI } from "../../api/UserAPI";
+import { setMe } from "../../redux/userSlice";
+import AuthAPI from "../../api/AuthAPI";
 function AppBarCustomize() {
-  const pages = ["Products", "Pricing", "Blog"];
-  let settings = ["Profile", "Sign out"];
+  const pages = ["Products", "Recommand", "Feature"];
+  let settings = ["Account", "Sign out"];
   const { cart } = useSelector((state) => state.cart);
+  const { user } = useSelector((state) => state.user);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
-  const isSignInSuccess = true;
+  const isSignInSuccess = React.useRef(false);
+  const checkSignIn = () => {
+    let token = localStorage.getItem("token");
+    if (token) {
+      isSignInSuccess.current = true;
+    }
+  };
+  checkSignIn();
+
+  const handleSignOut = () => {
+    localStorage.removeItem("token");
+    isSignInSuccess.current = false;
+    dispatch(setMe(null));
+    navigate("/");
+  };
+  React.useEffect(() => {
+    const getUser = async () => {
+      const data = await UserAPI.getMe();
+      console.log("data", data);
+
+      if (data && data.code === 1000) {
+        dispatch(setMe(data.data));
+      }
+    };
+    if (isSignInSuccess.current && !user) {
+      //
+      getUser();
+    }
+  }, [user]);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -37,21 +72,28 @@ function AppBarCustomize() {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = (setting) => {
     setAnchorElUser(null);
+    if (setting === "Sign out") {
+      handleSignOut();
+    } else if (setting === "Account") {
+      navigate("/account");
+    }
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="fixed">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {/* Icon + logo (not responsive) */}
-          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          <ShutterSpeedIcon
+            sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
+          />
           <Typography
             variant="h6"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="/"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -62,7 +104,7 @@ function AppBarCustomize() {
               textDecoration: "none",
             }}
           >
-            LOGO
+            SMART WATCH
           </Typography>
 
           {/* Menu navbar: include pages (responsive) */}
@@ -108,7 +150,7 @@ function AppBarCustomize() {
             variant="h5"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="/"
             sx={{
               mr: 2,
               display: { xs: "flex", md: "none" },
@@ -120,7 +162,7 @@ function AppBarCustomize() {
               textDecoration: "none",
             }}
           >
-            LOGO
+            SMART WATCH
           </Typography>
 
           {/* Pages not responsive */}
@@ -148,16 +190,26 @@ function AppBarCustomize() {
 
           {/* User settings (user menu)*/}
           <Box sx={{ flexGrow: 0 }}>
-            {isSignInSuccess ? (
+            {isSignInSuccess.current ? (
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  {user && user.url_avatar ? (
+                    <Avatar alt="user" src={user.url_avatar} />
+                  ) : (
+                    <Avatar alt="user" src="/static/images/avatar/2.jpg" />
+                  )}
                 </IconButton>
               </Tooltip>
             ) : (
               <Box sx={{ display: "flex", gap: 1 }}>
-                <Button variant="contained" color="secondary">
-                  Log in
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => {
+                    navigate("/login");
+                  }}
+                >
+                  Sign in
                 </Button>
                 <Button variant="contained" color="secondary">
                   Sign up
@@ -182,7 +234,12 @@ function AppBarCustomize() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem
+                  key={setting}
+                  onClick={() => {
+                    handleCloseUserMenu(setting);
+                  }}
+                >
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}

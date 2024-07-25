@@ -28,9 +28,9 @@ const FormGrid = styled("div")(() => ({
 
 export default function PaymentForm() {
   const [paymentType, setPaymentType] = React.useState("creditCard");
-  const [cardNumber, setCardNumber] = React.useState("");
-  const [cvv, setCvv] = React.useState("");
-  const [expirationDate, setExpirationDate] = React.useState("");
+  const [cardNumber, setCardNumber] = React.useState("8888 8888 8888 8888");
+  const [cvv, setCvv] = React.useState("123");
+  const [expirationDate, setExpirationDate] = React.useState("09/02");
 
   const handlePaymentTypeChange = (event) => {
     setPaymentType(event.target.value);
@@ -193,7 +193,8 @@ export default function PaymentForm() {
                 <OutlinedInput
                   id="card-name"
                   autoComplete="card-name"
-                  placeholder="John Smith"
+                  placeholder="Dang Quang"
+                  defaultValue="Dang Quang"
                   required
                 />
               </FormGrid>

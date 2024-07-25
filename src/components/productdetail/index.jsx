@@ -100,7 +100,7 @@ export default function ProductDetail({ open, onClose, product }) {
               style={{
                 maxWidth: "600px",
               }}
-              src={product.imgURL}
+              src={product.urlImage}
             />
           </Product>
           <ProductDetailInfoWrapper>
@@ -116,13 +116,20 @@ export default function ProductDetail({ open, onClose, product }) {
               {product.name}
             </Typography>
             <Typography variant="body">{product.description}</Typography>
+            <Typography variant="subtitle">{product.screen}</Typography>
+            <Typography variant="subtitle">{product.brand}</Typography>
+            <Typography variant="h5">${product.price}</Typography>
+
             <Box
               sx={{ mt: 4, minWidth: matches ? "200px" : "400px" }}
               display="flex"
               alignItems="center"
               justifyContent="space-between"
             >
-              <IncDec onValueChange={handleValueChange} />
+              <IncDec
+                onValueChange={handleValueChange}
+                maxQuantity={product.quantity}
+              />
               <Button variant="contained" onClick={handleButtonClick}>
                 Add to Cart
               </Button>

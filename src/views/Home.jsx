@@ -12,7 +12,12 @@ export default function Home() {
   return (
     <>
       <AppBarCustomize />
-      <Container fixed>
+      <Container
+        fixed
+        sx={{
+          paddingTop: "40px",
+        }}
+      >
         <Box
           sx={{
             width: "100%",
@@ -22,11 +27,11 @@ export default function Home() {
           <Banner />
           {/* Content */}
           <Product />
-          {/* Footer */}
-          <Footer />
         </Box>
         <ToastContainer />
       </Container>
+      {/* Footer */}
+      <Footer />
     </>
   );
 }

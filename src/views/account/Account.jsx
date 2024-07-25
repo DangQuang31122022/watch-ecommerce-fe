@@ -13,26 +13,36 @@ import { ToastContainer } from "react-toastify";
 import React from "react";
 import { BorderColorOutlined } from "@mui/icons-material";
 import { Colors } from "../../styles/theme";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export default function Account() {
-  const user = {
-    id: 1,
-    username: "dang quang",
-    email: "quang@gmail.com",
-    phone: "0123456789",
-    address: "Ha Noi",
-    banner: "src/images/user/banner1.jpg",
-    avatar: "src\\images\\user\\avatar1.jpg",
-  };
+  // const user = {
+  //   id: 1,
+  //   username: "dang quang",
+  //   email: "quang@gmail.com",
+  //   phone: "0123456789",
+  //   address: "Ha Noi",
+  //   banner: "src/images/user/banner1.jpg",
+  //   avatar: "src\\images\\user\\avatar1.jpg",
+  // };
+  const { user } = useSelector((state) => state.user);
+
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
   return (
     <>
       <AppBarCustomize />
-      <Container fixed>
+      <Container
+        fixed
+        sx={{
+          paddingTop: "80px",
+        }}
+      >
         <Box sx={{ width: "100%" }}>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <Tabs
@@ -46,7 +56,11 @@ export default function Account() {
             </Tabs>
           </Box>
           <CustomTabPanel value={value} index={0}>
-            <Profile user={user} />
+            {user ? (
+              <Profile user={user} />
+            ) : (
+              <Typography>Not found</Typography>
+            )}
           </CustomTabPanel>
           <CustomTabPanel value={value} index={1}>
             <Box
@@ -102,6 +116,10 @@ function a11yProps(index) {
 }
 
 function Profile({ user }) {
+  const navigate = useNavigate();
+  const handleUpdate = () => {
+    navigate("/accountEdit", { state: { user: user } });
+  };
   return (
     <>
       {console.log(user)}
@@ -129,9 +147,9 @@ function Profile({ user }) {
           sx={{ width: "100%" }}
         > */}
         <Box sx={{ width: "100%" }}>
-          {user && user.banner ? (
+          {user && user.url_banner ? (
             <img
-              src={user.banner}
+              src={user.url_banner}
               alt="banner"
               style={{ width: "100%", height: "200px", objectFit: "cover" }}
             />
@@ -179,7 +197,7 @@ function Profile({ user }) {
           }
         > */}
         <img
-          src={user.avatar}
+          src={user.url_avatar}
           alt="avatar"
           style={{ width: "100px", height: "100px", borderRadius: "50%" }}
         />
@@ -188,7 +206,7 @@ function Profile({ user }) {
       {/* User Info */}
       <Box sx={{ mt: 2 }}>
         <Typography variant="h6" gutterBottom fontWeight={700}>
-          {user.username}
+          {user.full_name}
         </Typography>
         <Typography variant="body1" gutterBottom fontWeight={700}>
           Email
@@ -224,6 +242,7 @@ function Profile({ user }) {
               backgroundColor: "#000",
             },
           }}
+          onClick={handleUpdate}
         >
           Update
         </Button>

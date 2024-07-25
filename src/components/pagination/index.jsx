@@ -1,7 +1,9 @@
 import { styled } from "@mui/system";
 import { Box, Pagination } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { data } from "../../data";
+import { ProductAPI } from "../../api/ProductAPI";
+import AuthAPI from "../../api/AuthAPI";
 const pageSize = 6;
 
 const PaginationContainer = styled(Box)(() => ({
@@ -17,16 +19,30 @@ export default function AppPagination({ setProducts }) {
     from: 0, // start index
     to: pageSize, // end index, init value is pageSize
   });
+  const totalRef = useRef(0);
+  const getAllProducts = async () => {
+    const response = await ProductAPI.allProducts();
+    if (response && response.code === 1000) {
+      totalRef.current = response.data.length;
+    }
+  };
 
+  const handleGetProducts = async (from) => {
+    const response = await ProductAPI.getProductsFromTo(from, pageSize);
+    if (response && response.code === 1000) {
+      setPagination({ ...pagination, count: totalRef.current });
+      setProducts(response.data ? response.data : []);
+    }
+  };
   useEffect(() => {
-    setPagination({ ...pagination, count: data.length });
-    setProducts(data.slice(pagination.from, pagination.to));
-
+    getAllProducts();
+    handleGetProducts(pagination.from, pagination.to);
+    // setPagination({ ...pagination, count: data.length });
+    // setProducts(data.slice(pagination.from, pagination.to));
     // ProductService.getProducts(pagination.from, pagination.to).then((p) => {
     //   setPagination({ ...pagination, count: p.total });
     //   setProducts(p.data);
     // });
-
     // service.getData({ from: pagination.from, to: pagination.to }).then((response) => {
     //     setPagination({ ...pagination, count: response.count });
     //     setProducts(response.data);
