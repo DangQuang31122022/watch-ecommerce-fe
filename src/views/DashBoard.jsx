@@ -175,11 +175,7 @@ export default function Dashboard() {
       >
         <Toolbar />
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-          {loading ? (
-            () => <div>Loading...</div>
-          ) : (
-            <ProductUI products={products} />
-          )}
+          {loading ? <div>Loading...</div> : <ProductUI products={products} />}
           <Copyright sx={{ pt: 4 }} />
         </Container>
       </Box>
@@ -189,7 +185,22 @@ export default function Dashboard() {
 }
 
 function ProductUI({ products }) {
-  const [nbRows, setNbRows] = React.useState(5);
+  const [row, setRow] = React.useState(
+    products.map((product) => {
+      return {
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        quantity: product.quantity,
+        brand: product.brand,
+        description: product.description,
+        battery: product.battery,
+        screen: product.screen,
+        color: product.color,
+        status: product.status,
+      };
+    })
+  );
   const columns = [
     { field: "id", headerName: "ID", width: 90 },
     {
@@ -261,25 +272,39 @@ function ProductUI({ products }) {
       status: product.status,
     };
   });
-  const removeRow = () => setNbRows((x) => Math.max(0, x - 1));
-  const addRow = () => setNbRows((x) => Math.min(100, x + 1));
+  // const removeRow = () => setNbRows((x) => Math.max(0, x - 1));
+  const addRow = (newRow) => setRow((prevRows) => [...prevRows, newRow]);
+  const handleAddRow = () => {
+    const newRow = {
+      id: rows.length + 1,
+      name: "Product Name",
+      price: 0,
+      quantity: 0,
+      brand: "Brand",
+      description: "Description",
+      battery: "Battery",
+      screen: "Screen",
+      color: "Color",
+      status: "Status",
+    };
+    addRow(newRow);
+  };
+
   return (
     <>
       <Stack direction="row" spacing={1} sx={{ mb: 1 }}>
-        <Button size="small" onClick={removeRow}>
-          Remove a row
-        </Button>
-        <Button size="small" onClick={addRow}>
+        <Button size="small">Remove a row</Button>
+        <Button size="small" onClick={handleAddRow}>
           Add a row
         </Button>
       </Stack>
-      <div
+      <Box
         style={{
           height: 400,
         }}
       >
         <DataGrid
-          rows={rows}
+          rows={row}
           columns={columns}
           pageSize={5}
           checkboxSelection
@@ -287,7 +312,7 @@ function ProductUI({ products }) {
           pagination
           paginationMode="client"
         />
-      </div>
+      </Box>
     </>
   );
 }

@@ -216,7 +216,7 @@ export default function Checkout() {
             alignItems: "start",
             pt: { xs: 2, sm: 4 },
             px: { xs: 2, sm: 10 },
-            gap: { xs: 4, md: 8 },
+            gap: { xs: 3, md: 6 },
           }}
         >
           <Box
@@ -225,7 +225,7 @@ export default function Checkout() {
               justifyContent: { sm: "space-between", md: "flex-end" },
               alignItems: "center",
               width: "100%",
-              maxWidth: { sm: "100%", md: 600 },
+              maxWidth: { sm: "100%", md: 500 },
             }}
           >
             {/* back button  */}
@@ -262,7 +262,7 @@ export default function Checkout() {
                 justifyContent: "space-between",
                 alignItems: "flex-end",
                 flexGrow: 1,
-                height: 150,
+                height: 30,
               }}
             >
               {/* <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} /> */}
@@ -352,7 +352,7 @@ export default function Checkout() {
             {/* step 3 */}
             {activeStep === steps.length ? (
               <Stack spacing={2} useFlexGap>
-                <Typography variant="h1">📦</Typography>
+                {/* <Typography variant="h1">📦</Typography> */}
                 <Typography variant="h5">Thank you for your order!</Typography>
                 <Typography variant="body1" color="text.secondary">
                   Your order number is
